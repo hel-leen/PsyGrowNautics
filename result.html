@@ -116,7 +116,7 @@
           });
         };
         return obj.expand()
-      }).flat().filter((item) => item.value > 20);
+      }).flat().filter((item) => item.value > 25);
     });
   // 优势特质赋值
   var data_adv = expand_char(char_adv);
@@ -152,6 +152,10 @@
     chart.xAxis().labels().fontSize(9);
     chart.yAxis().labels().fontSize(7);
     chart.margin(-9);
+    var tooltip = chart.tooltip();
+    tooltip.useHtml(true);
+    tooltip.titleFormat('<b>{%X}</b>');
+    tooltip.format('<i>{%Value}%</i>');
     chart.container(container);
     document.querySelector("#radarmap").parentNode.childNodes[3].style = 'display: none;';
     chart.draw();
