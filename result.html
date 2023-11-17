@@ -83,13 +83,13 @@
         });
       };
       return obj.expand()
-    }).flat();
+    }).flat().filter ((item) => item.value >20);
   });
   // 优势特质赋值
   var data_adv = expand_char(char_adv);
   var data_disadv = expand_char(char_disadv);
   
-  // 词云图绘制的 function
+  // 词云图的绘制
   var plot_wordcloud = ((container, data, colorful = true) => {
     var chart = anychart.tagCloud(data);
     chart.angles([0]);
@@ -113,7 +113,7 @@
     chart.draw();
   });
   
-  // 雷达图绘制的
+  // 雷达图的绘制
   	var plot_radar = ((container, data) => {
 		chart = anychart.radar();
        chart.background(false);
@@ -165,8 +165,8 @@
     };
     document.querySelectorAll(".tag")[1].style = "align-self: flex-end;";
     document.querySelectorAll(".tag")[2].style = "align-self: flex-start;";
-    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长不足：</strong></li>" + description.disadvDet.replace(/<\/p><p>/, wordcloud.replace(/优势/, "劣势")
-      .replace(/src="\S+"/, 'src="https://uk.mathworks.com/help/examples/matlab/win64/CreateWordCloudFromTableExample_01.png"'));
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长不足：</strong></li>" + description.disadvDet.replace(/<\/p><p>/, wordcloud
+      .replace(/优势/, "劣势"));
     plot_wordcloud("wordcloud", data_disadv, false); // 绘制劣势词云图
   };
   const result3 = () => {
