@@ -512,7 +512,7 @@ B5. 成长型 + 积极性最低 = 焦虑不安成长型
       <div class="center text-focus-in wordcloud" >
         <img style="width: 70%;" src="https://ts4.cn.mm.bing.net/th?id=OIP-C.o06EUK3N4VcdFFUCKJ7b0QHaHa&pid=Api" alt="wordcloud" >
          <div id="wordcloud"></div>
-	    <p><a>优势特质</a><br>（数据来源：你的个人测评数据）</p>
+	    <p><a>优势特质关键词</a><br>（数据来源：你的个人测评数据）</p>
 	  </div>
     <p>
 `;
