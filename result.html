@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测评结果详情</title>
+  <link rel="stylesheet" href="result.css">
+  <script type="text/javascript" src="./anychart-base.min.js"></script>
+  <script type="text/javascript" src="./anychart-tag-cloud.min.js"></script>
+  <script type="text/javascript" src="./anychart-radar.min.js"></script>
+  <script type="text/javascript" src="descriptions.js"></script>
+  <script type="text/javascript">
+  // const scores = [41, 33, 55.3, 72.2, 76, 31];
+  const scores = Array.from({
+    length: 6
+  }, () => Math.random() * 75 + 24);
+  console.log(scores);
+ 
+  var clicks = 0,
+    descriptions =
+    // text.split('----')
+    str.map((item) => {
+      return result = {
+        "code": item.match(/(?<=^\s+)[AB][1-9]+/)[0],
+        "mainType": item.match(/(?<=\= \S{4,4})\S{3,3}/gim)[0],
+        "subType": item.match(/(?<=\= )\S{4,4}/gim)[0],
+        "advanTag": item.match(/(?<=1.1 要点：?\s)[\s\S]+(?=1.2)/gim)[0].replace(/，/g, "，<wbr>").split('\n').slice(0, -1),
+        "disadTag": item.match(/(?<=2.1 要点：?\s)[\s\S]+(?=2.2)/gim)[0].replace(/，/g, "，<wbr>").split('\n').slice(0, -1),
+        "suggTag": item.match(/(?<=3.1 要点：?\s)[\s\S]+(?=3.2)/gim)[0].replace(/，/g, "，<wbr>").split('\n').slice(0, -1),
+        "advanDet": "<p>".concat(item.match(/(?<=1.2 具体\S+\s)[\s\S]+(?=2.?\s?我)/gim)[0].replace(/\n/g, "</p><p>")).replace(/<p>+$/, ''),
+        "disadvDet": "<p>".concat(item.match(/(?<=2.2 具体\S+?\s)[\s\S]+(?=3.?\s?我)/gim)[0].replace(/\n/g, "</p><p>")).replace(/<p>+$/, ''),
+        "suggDet": "<p>".concat(item.match(/(?<=3.2 具体\S+?\s)[\s\S]+/gim)[0].replace(/\n/g, "</p><p> ")).replace(/<p>+$/, '')
+      };
+    });
+  let 
+    radar12 = {value: Math.round((scores[1] + scores[2]) / 2), y: "开放 + 尽责", x: "上进心"},
+    radar13 = {value: Math.round((scores[1] + scores[3]) / 2), y: "开放 + 外倾", x: "探索心"},
+    radar14 = {value: Math.round((scores[1] + scores[4]) / 2), y: "开放 + 宜人", x: "包容力"},
+    radar15 = {value: Math.round((scores[1] + scores[5]) / 2), y: "开放 + 积极", x: "抗压力"},
+    radar23 = {value: Math.round((scores[2] + scores[3]) / 2), y: "尽责 + 外倾", x: "领导力"},
+    radar24 = {value: Math.round((scores[2] + scores[4]) / 2), y: "尽责 + 宜人", x: "共情力"},
+    radar25 = {value: Math.round((scores[2] + scores[5]) / 2), y: "尽责 + 积极", x: "可靠度"},
+    radar34 = {value: Math.round((scores[3] + scores[4]) / 2), y: "外倾 + 宜人", x: "善缘力"},
+    radar35 = {value: Math.round((scores[3] + scores[5]) / 2), y: "外倾 + 积极", x: "朋友力"},
+    radar45 = {value: Math.round((scores[4] + scores[5]) / 2), y: "宜人 + 积极", x: "达观力"},
+    radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
+    MSscore = Math.round(scores.shift()), // 思维方式分
+    mainType = MSscore < 66 ? "A" : "B", //主类型
+    subType = scores.indexOf(Math.min(...scores)) + 1, // 亚型
+    description = descriptions.filter(item => item.code === mainType.concat(subType))[0]; // 筛选类型的对应描述
+  console.log(mainType + (subType));
+  // 根据分数计算高低分权重
+  var char_value = scores.concat(scores.map((item) => {
+    return item = 99 - item
+  })).map((item) => {
+    return item = item
+  }),
+  // 按分数给各优劣特质赋值的function
+  expand_char = ((char) => {
+    char_map = char.map((ele, index) => {
+      ele.score = char_value[index];
+      return ele
+    });
+   // char_map.splice(subType - 1, 1); // 去掉最低分
+    return char_map.map((obj, index) => {
+      obj.expand = function() {
+        return this.word.map((item) => {
+          return items = {
+            category: obj.type,
+            "x": item,
+            value: 
+              index == subType + 4 ? Math.floor(obj.score * 3 + Math.random() * 5) // 最低分的反项多加权
+              // : index == scores.indexOf(Math.max(...scores)) ? Math.floor(obj.score * 3 + Math.random() * 5) // 最高分加权
+              : obj.score > 90 ? Math.floor(obj.score * 4.4 + Math.random() * 2) // 高分加权
+              : obj.score > 80 ? Math.floor(obj.score * 3.3 + Math.random() * 2) 
+              : obj.score > 70 ? Math.floor(obj.score * 1.5 + Math.random() * 2) 
+              : obj.score < 10 ? Math.floor(obj.score * 0 ) // 低分加权
+                : obj.score < 20 ? Math.floor(obj.score * .2 + Math.random() * 2) 
+                : obj.score < 40 ? Math.floor(obj.score * .8 + Math.random() * 2) 
+                : Math.floor(obj.score + (Math.random() - 0.5) * 2) // 随机加减零头
+          }
+        });
+      };
+      return obj.expand()
+    }).flat();
+  });
+  // 优势特质赋值
+  var data_adv = expand_char(char_adv);
+  var data_disadv = expand_char(char_disadv);
+  
+  // 词云图绘制的 function
+  var plot_wordcloud = ((container, data, colorful = true) => {
+    var chart = anychart.tagCloud(data);
+    chart.angles([0]);
+    if(colorful == true) {
+      var palette = "";
+    } else {
+      var palette = anychart.palettes.distinctColors();
+      palette.items(['#22092C', '#222341', '#ae3144', '#b05941']);
+    }
+    chart.palette(palette);
+    chart.margin(-5, 0, -20, 0);
+    chart.background(false);
+    var tooltip = chart.tooltip();
+    tooltip.useHtml(true);
+    tooltip.titleFormat('<b>{%X}</b>');
+    tooltip.format('强度: <i>{%Value}</i>');
+    chart.container(container);
+    var parentWidth = parseInt(window.getComputedStyle(document.querySelector("#" + container).parentNode, null).getPropertyValue("width"));
+    document.querySelector("#" + container).style = "width: " + parentWidth *.88  + "px; height:" +parentWidth* .66 + "px;";
+    document.querySelector("." + container + "> img").style = 'display: none;';
+    chart.draw();
+  });
+  
+  // 雷达图绘制的
+  	var plot_radar = ((container, data) => {
+		chart = anychart.radar();
+       chart.background(false);
+		chart.area(radars);
+		chart.container(container);
+      // document.querySelector("" + "svg.icon-tabler-chart-radar").style = 'display: none;';
+       document.querySelector("#radarmap").parentNode.childNodes[3].style = 'display: none;';
+		chart.draw();
+	});
+  const result0 = () => {
+    document.body.innerHTML = page0;
+    document.getElementById("score-num").innerHTML = "&nbsp;&nbsp;<a>" + MSscore + "</a>%";
+    document.getElementById("type-main").innerHTML = mainType == "A" ? "固定型" : "成长型";
+    document.getElementById("type-sub").innerHTML = description.subType;
+    for(let i = 0; i < description.advanTag.length; i++) {
+      document.querySelectorAll("#advan > ul > li ")[i].innerHTML = description.advanTag[i];
+    }
+    for(let i = 0; i < description.disadTag.length; i++) {
+      document.querySelectorAll("#disadv > ul > li ")[i].innerHTML = description.disadTag[i];
+    }
+    for(let i = 0; i < description.suggTag.length; i++) {
+      document.querySelectorAll("#suggest > ul > li ")[i].innerHTML = description.suggTag[i];
+    }
+    for(let i = 0; i < radars.length; i++) {
+      document.querySelectorAll("ul.radar > li ")[i].innerHTML = radars[i].x.concat("：", radars[i].value, "%");
+    }
+    plot_radar("radarmap", radars);
+    // circle background
+    let scoreBar = 'background:radial-gradient(closest-side, white 72%, transparent 72% 100%), conic-gradient(rgba(201, 198, 237, 0.88) '.concat(MSscore, '%, rgba(224, 224, 229, 0.77) 0%);');
+    document.getElementById("score-bar").style = scoreBar;
+    // circle position
+    document.querySelector("#score-circle").style = "top: ".concat(document.documentElement.scrollHeight / 2 - document.querySelector(".title ").scrollHeight - 0 + "px;");
+  };
+  const result1 = () => {
+    document.body.innerHTML = page1;
+    document.querySelectorAll(".tag")[0].innerHTML = "<strong>" + description.subType + "</strong>" + description.mainType;
+    for(let i = 0; i < description.advanTag.length; i++) {
+      document.querySelectorAll(".tag")[i + 1].innerHTML = "『" + description.advanTag[i].replace(/<br>/g, "") + "』";
+    }
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长优势：</strong></li>" + description.advanDet.replace(/xx(?=分)/i, MSscore) //替换分值
+      .replace(/<\/p><p>/, wordcloud); // 第一段后加词云图
+    plot_wordcloud("wordcloud", data_adv); // 绘制优势词云图
+  };
+  const result2 = () => {
+    document.body.innerHTML = page1;
+    document.querySelectorAll(".tag")[0].innerHTML = "<strong>" + description.subType + "</strong>" + description.mainType;
+    for(let i = 0; i < description.disadTag.length; i++) {
+      document.querySelectorAll(".tag")[i + 1].innerHTML = "『" + description.disadTag[i].replace(/<br>/g, "") + "』";
+    };
+    document.querySelectorAll(".tag")[1].style = "align-self: flex-end;";
+    document.querySelectorAll(".tag")[2].style = "align-self: flex-start;";
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长不足：</strong></li>" + description.disadvDet.replace(/<\/p><p>/, wordcloud.replace(/优势/, "劣势")
+      .replace(/src="\S+"/, 'src="https://uk.mathworks.com/help/examples/matlab/win64/CreateWordCloudFromTableExample_01.png"'));
+    plot_wordcloud("wordcloud", data_disadv, false); // 绘制劣势词云图
+  };
+  const result3 = () => {
+    document.body.innerHTML = page1;
+    document.querySelectorAll(".tag")[0].innerHTML = "<strong>" + description.subType + "</strong>" + description.mainType;
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长方向：</strong></li>" + description.suggDet;
+    for(let i = 0; i < description.suggTag.length; i++) {
+      document.querySelectorAll(".tag")[i + 1].innerHTML = "『" + description.suggTag[i].replace(/<br>/g, "") + "』";
+      document.querySelectorAll("#btn_next")[0].outerHTML = '<button class="detail btn fade-in" id="btn_next" onClick="clicks=0; clickCount();">返回</button>'; // 返回按钮
+    };
+  };
+  var hrefname = location.pathname.toLowerCase().match(/^.+[\/\\](.*)(?=.html)/)[1].replace("-", "");
+  window.onload = function() {
+    result0();
+  };
+
+  function clickCount() {
+    var opacity = 1; // Initial opacity
+    var interval = setInterval(function() {
+      if(opacity > 0) {
+        opacity -= 0.2;
+        document.querySelector('body').style.opacity = opacity;
+      } else {
+        clearInterval(interval); // Stop the interval 
+        window.scrollTo(0, 0);
+        document.querySelector('body').style.opacity = 1;
+        eval("result" + clicks + "()"); // call function based on clicks 
+      }
+    }, 80);
+  }
+  </script>
+  <style>
+ 
+  </style>
+</head>
+
+<body>
+</body>
+
+</html>
