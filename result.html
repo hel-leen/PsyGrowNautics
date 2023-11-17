@@ -16,7 +16,6 @@
     length: 6
   }, () => Math.random() * 75 + 24);
   console.log(scores);
- 
   var clicks = 0,
     descriptions =
     // text.split('----')
@@ -33,17 +32,56 @@
         "suggDet": "<p>".concat(item.match(/(?<=3.2 具体\S+?\s)[\s\S]+/gim)[0].replace(/\n/g, "</p><p> ")).replace(/<p>+$/, '')
       };
     });
-  let 
-    radar12 = {value: Math.round((scores[1] + scores[2]) / 2), y: "开放 + 尽责", x: "上进心"},
-    radar13 = {value: Math.round((scores[1] + scores[3]) / 2), y: "开放 + 外倾", x: "探索心"},
-    radar14 = {value: Math.round((scores[1] + scores[4]) / 2), y: "开放 + 宜人", x: "包容力"},
-    radar15 = {value: Math.round((scores[1] + scores[5]) / 2), y: "开放 + 积极", x: "抗压力"},
-    radar23 = {value: Math.round((scores[2] + scores[3]) / 2), y: "尽责 + 外倾", x: "领导力"},
-    radar24 = {value: Math.round((scores[2] + scores[4]) / 2), y: "尽责 + 宜人", x: "共情力"},
-    radar25 = {value: Math.round((scores[2] + scores[5]) / 2), y: "尽责 + 积极", x: "可靠度"},
-    radar34 = {value: Math.round((scores[3] + scores[4]) / 2), y: "外倾 + 宜人", x: "善缘力"},
-    radar35 = {value: Math.round((scores[3] + scores[5]) / 2), y: "外倾 + 积极", x: "朋友力"},
-    radar45 = {value: Math.round((scores[4] + scores[5]) / 2), y: "宜人 + 积极", x: "达观力"},
+  let radar12 = {
+      value: Math.round((scores[1] + scores[2]) / 2),
+      y: "开放 + 尽责",
+      x: "上进心"
+    },
+    radar13 = {
+      value: Math.round((scores[1] + scores[3]) / 2),
+      y: "开放 + 外倾",
+      x: "探索心"
+    },
+    radar14 = {
+      value: Math.round((scores[1] + scores[4]) / 2),
+      y: "开放 + 宜人",
+      x: "包容力"
+    },
+    radar15 = {
+      value: Math.round((scores[1] + scores[5]) / 2),
+      y: "开放 + 积极",
+      x: "抗压力"
+    },
+    radar23 = {
+      value: Math.round((scores[2] + scores[3]) / 2),
+      y: "尽责 + 外倾",
+      x: "领导力"
+    },
+    radar24 = {
+      value: Math.round((scores[2] + scores[4]) / 2),
+      y: "尽责 + 宜人",
+      x: "共情力"
+    },
+    radar25 = {
+      value: Math.round((scores[2] + scores[5]) / 2),
+      y: "尽责 + 积极",
+      x: "可靠度"
+    },
+    radar34 = {
+      value: Math.round((scores[3] + scores[4]) / 2),
+      y: "外倾 + 宜人",
+      x: "善缘力"
+    },
+    radar35 = {
+      value: Math.round((scores[3] + scores[5]) / 2),
+      y: "外倾 + 积极",
+      x: "朋友力"
+    },
+    radar45 = {
+      value: Math.round((scores[4] + scores[5]) / 2),
+      y: "宜人 + 积极",
+      x: "达观力"
+    },
     radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
     MSscore = Math.round(scores.shift()), // 思维方式分
     mainType = MSscore < 66 ? "A" : "B", //主类型
@@ -52,43 +90,37 @@
   console.log(mainType + (subType));
   // 根据分数计算高低分权重
   var char_value = scores.concat(scores.map((item) => {
-    return item = 99 - item
-  })).map((item) => {
-    return item = item
-  }),
-  // 按分数给各优劣特质赋值的function
-  expand_char = ((char) => {
-    char_map = char.map((ele, index) => {
-      ele.score = char_value[index];
-      return ele
+      return item = 99 - item
+    })).map((item) => {
+      return item = item
+    }),
+    // 按分数给各优劣特质赋值的function
+    expand_char = ((char) => {
+      char_map = char.map((ele, index) => {
+        ele.score = char_value[index];
+        return ele
+      });
+      // char_map.splice(subType - 1, 1); // 去掉最低分
+      return char_map.map((obj, index) => {
+        obj.expand = function() {
+          return this.word.map((item) => {
+            return items = {
+              category: obj.type,
+              "x": item,
+              value: index == subType + 4 ? Math.floor(obj.score * 3 + Math.random() * 5) // 最低分的反项多加权
+                // : index == scores.indexOf(Math.max(...scores)) ? Math.floor(obj.score * 3 + Math.random() * 5) // 最高分加权
+                : obj.score > 90 ? Math.floor(obj.score * 4.4 + Math.random() * 2) // 高分加权
+                : obj.score > 80 ? Math.floor(obj.score * 3.3 + Math.random() * 2) : obj.score > 70 ? Math.floor(obj.score * 1.5 + Math.random() * 2) : obj.score < 10 ? Math.floor(obj.score * 0) // 低分加权
+                : obj.score < 20 ? Math.floor(obj.score * .2 + Math.random() * 2) : obj.score < 40 ? Math.floor(obj.score * .8 + Math.random() * 2) : Math.floor(obj.score + (Math.random() - 0.5) * 2) // 随机加减零头
+            }
+          });
+        };
+        return obj.expand()
+      }).flat().filter((item) => item.value > 20);
     });
-   // char_map.splice(subType - 1, 1); // 去掉最低分
-    return char_map.map((obj, index) => {
-      obj.expand = function() {
-        return this.word.map((item) => {
-          return items = {
-            category: obj.type,
-            "x": item,
-            value: 
-              index == subType + 4 ? Math.floor(obj.score * 3 + Math.random() * 5) // 最低分的反项多加权
-              // : index == scores.indexOf(Math.max(...scores)) ? Math.floor(obj.score * 3 + Math.random() * 5) // 最高分加权
-              : obj.score > 90 ? Math.floor(obj.score * 4.4 + Math.random() * 2) // 高分加权
-              : obj.score > 80 ? Math.floor(obj.score * 3.3 + Math.random() * 2) 
-              : obj.score > 70 ? Math.floor(obj.score * 1.5 + Math.random() * 2) 
-              : obj.score < 10 ? Math.floor(obj.score * 0 ) // 低分加权
-                : obj.score < 20 ? Math.floor(obj.score * .2 + Math.random() * 2) 
-                : obj.score < 40 ? Math.floor(obj.score * .8 + Math.random() * 2) 
-                : Math.floor(obj.score + (Math.random() - 0.5) * 2) // 随机加减零头
-          }
-        });
-      };
-      return obj.expand()
-    }).flat().filter ((item) => item.value >20);
-  });
   // 优势特质赋值
   var data_adv = expand_char(char_adv);
   var data_disadv = expand_char(char_disadv);
-  
   // 词云图的绘制
   var plot_wordcloud = ((container, data, colorful = true) => {
     var chart = anychart.tagCloud(data);
@@ -108,21 +140,22 @@
     tooltip.format('强度: <i>{%Value}</i>');
     chart.container(container);
     var parentWidth = parseInt(window.getComputedStyle(document.querySelector("#" + container).parentNode, null).getPropertyValue("width"));
-    document.querySelector("#" + container).style = "width: " + parentWidth *.88  + "px; height:" +parentWidth* .66 + "px;";
+    document.querySelector("#" + container).style = "width: " + parentWidth * .88 + "px; height:" + parentWidth * .66 + "px;";
     document.querySelector("." + container + "> img").style = 'display: none;';
     chart.draw();
   });
-  
   // 雷达图的绘制
-  	var plot_radar = ((container, data) => {
-		chart = anychart.radar();
-       chart.background(false);
-		chart.area(radars);
-		chart.container(container);
-      // document.querySelector("" + "svg.icon-tabler-chart-radar").style = 'display: none;';
-       document.querySelector("#radarmap").parentNode.childNodes[3].style = 'display: none;';
-		chart.draw();
-	});
+  var plot_radar = ((container, data) => {
+    chart = anychart.radar();
+    chart.background(false);
+    chart.area(radars);
+    chart.xAxis().labels().fontSize(9);
+    chart.yAxis().labels().fontSize(7);
+    chart.margin(-9);
+    chart.container(container);
+    document.querySelector("#radarmap").parentNode.childNodes[3].style = 'display: none;';
+    chart.draw();
+  });
   const result0 = () => {
     document.body.innerHTML = page0;
     document.getElementById("score-num").innerHTML = "&nbsp;&nbsp;<a>" + MSscore + "</a>%";
@@ -165,8 +198,7 @@
     };
     document.querySelectorAll(".tag")[1].style = "align-self: flex-end;";
     document.querySelectorAll(".tag")[2].style = "align-self: flex-start;";
-    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长不足：</strong></li>" + description.disadvDet.replace(/<\/p><p>/, wordcloud
-      .replace(/优势/, "劣势"));
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长不足：</strong></li>" + description.disadvDet.replace(/<\/p><p>/, wordcloud.replace(/优势/, "劣势"));
     plot_wordcloud("wordcloud", data_disadv, false); // 绘制劣势词云图
   };
   const result3 = () => {
@@ -199,7 +231,6 @@
   }
   </script>
   <style>
- 
   </style>
 </head>
 
