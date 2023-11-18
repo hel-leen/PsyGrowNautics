@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>测评结果详情</title>
+  <title>思维模式测评结果</title>
   <link rel="stylesheet" href="result.css">
   <script type="text/javascript" src="./anychart-base.min.js"></script>
   <script type="text/javascript" src="./anychart-tag-cloud.min.js"></script>
@@ -12,13 +12,35 @@
   <script type="text/javascript" src="descriptions.js"></script>
   <script type="text/javascript">
   // const scores = [41, 33, 55.3, 72.2, 76, 31];
-  const scores = Array.from({
-    length: 6
-  }, () => Math.random() * 75 + 24);
+  const scores = Array.from({ length: 6 }, () => Math.random() * 75 + 24);
   console.log(scores);
   var clicks = 0,
-    descriptions =
-    // text.split('----')
+    MSscore = Math.round(scores.shift()), // 思维方式分
+    mainType = MSscore < 66 ? "A" : "B", //主类型
+    subType = scores.indexOf(Math.min(...scores)) + 1; // 亚型
+  let 
+    radar12 = {value: Math.round(scores[1] * .25  + scores[2] * .25 + scores[0] * .5 ), 
+      y: "开放 + 尽责+ 成长", x: "上进心"},
+    radar13 = {value: Math.round(scores[1] * .25  + scores[3] * .25 + scores[0] * .5 ), 
+      y: "开放 + 外倾+ 成长", x: "探索心"},
+    radar14 = {value: Math.round(scores[1] * .25  + scores[4] * .25 + scores[0] * .5 ), 
+      y: "开放 + 宜人+ 成长", x: "包容力"},
+    radar15 = {value: Math.round(scores[1] * .25  + scores[5] * .25 + scores[0] * .5 ), 
+      y: "开放 + 积极+ 成长", x: "抗压力"},
+    radar23 = {value: Math.round(scores[2] * .25  + scores[3] * .25 + scores[0] * .5 ), 
+      y: "尽责 + 外倾+ 成长", x: "领导力"},
+    radar24 = {value: Math.round(scores[2] * .25  + scores[4] * .25 + scores[0] * .5 ), 
+      y: "尽责 + 宜人+ 成长", x: "共情力"},
+    radar25 = {value: Math.round(scores[2] * .25  + scores[5] * .25 + scores[0] * .5 ), 
+      y: "尽责 + 积极+ 成长", x: "可靠度"},
+    radar34 = {value: Math.round(scores[3] * .25  + scores[4] * .25 + scores[0] * .5 ), 
+      y: "外倾 + 宜人+ 成长", x: "善缘力"},
+    radar35 = {value: Math.round(scores[3] * .25  + scores[5] * .25 + scores[0] * .5 ), 
+      y: "外倾 + 积极+ 成长", x: "朋友力"},
+    radar45 = {value: Math.round(scores[4] * .25  + scores[5] * .25 + scores[0] * .5 ), 
+      y: "宜人 + 积极+ 成长", x: "达观力"},
+    radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
+    descriptions = // parse descriptions
     str.map((item) => {
       return result = {
         "code": item.match(/(?<=^\s+)[AB][1-9]+/)[0],
@@ -31,32 +53,7 @@
         "disadvDet": "<p>".concat(item.match(/(?<=2.2 具体\S+?\s)[\s\S]+(?=3.?\s?我)/gim)[0].replace(/\n/g, "</p><p>")).replace(/<p>+$/, ''),
         "suggDet": "<p>".concat(item.match(/(?<=3.2 具体\S+?\s)[\s\S]+/gim)[0].replace(/\n/g, "</p><p> ")).replace(/<p>+$/, '')
       };
-    });
-  let 
-    radar12 = {value: Math.round((scores[1] + scores[2]+ scores[0]) / 3), 
-      y: "开放 + 尽责+ 成长", x: "上进心"},
-    radar13 = {value: Math.round((scores[1] + scores[3]+ scores[0]) / 3), 
-      y: "开放 + 外倾+ 成长", x: "探索心"},
-    radar14 = {value: Math.round((scores[1] + scores[4]+ scores[0]) / 3), 
-      y: "开放 + 宜人+ 成长", x: "包容力"},
-    radar15 = {value: Math.round((scores[1] + scores[5]+ scores[0]) / 3), 
-      y: "开放 + 积极+ 成长", x: "抗压力"},
-    radar23 = {value: Math.round((scores[2] + scores[3]+ scores[0]) / 3), 
-      y: "尽责 + 外倾+ 成长", x: "领导力"},
-    radar24 = {value: Math.round((scores[2] + scores[4]+ scores[0]) / 3), 
-      y: "尽责 + 宜人+ 成长", x: "共情力"},
-    radar25 = {value: Math.round((scores[2] + scores[5]+ scores[0]) / 3), 
-      y: "尽责 + 积极+ 成长", x: "可靠度"},
-    radar34 = {value: Math.round((scores[3] + scores[4]+ scores[0]) / 3), 
-      y: "外倾 + 宜人+ 成长", x: "善缘力"},
-    radar35 = {value: Math.round((scores[3] + scores[5]+ scores[0]) / 3), 
-      y: "外倾 + 积极+ 成长", x: "朋友力"},
-    radar45 = {value: Math.round((scores[4] + scores[5]+ scores[0]) / 3), 
-      y: "宜人 + 积极+ 成长", x: "达观力"},
-    radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
-    MSscore = Math.round(scores.shift()), // 思维方式分
-    mainType = MSscore < 66 ? "A" : "B", //主类型
-    subType = scores.indexOf(Math.min(...scores)) + 1, // 亚型
+    }), 
     description = descriptions.filter(item => item.code === mainType.concat(subType))[0]; // 筛选类型的对应描述
   console.log(mainType + (subType));
   // 根据分数计算高低分权重
@@ -198,11 +195,13 @@
   const result3 = () => {
     document.body.innerHTML = page1;
     document.querySelectorAll(".tag")[0].innerHTML = "<strong>" + description.subType + "</strong>" + description.mainType;
-    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长方向：</strong></li>" + description.suggDet;
     for(let i = 0; i < description.suggTag.length; i++) {
       document.querySelectorAll(".tag")[i + 1].innerHTML = "『" + description.suggTag[i].replace(/<br>/g, "") + "』";
-      document.querySelectorAll("#btn_next")[0].outerHTML = '<button class="detail btn fade-in" id="btn_next" onClick="clicks=0; clickCount();">返回首页</button>'; // 返回按钮
     };
+    document.querySelectorAll("#btn_next")[0].outerHTML = '<button class="detail btn fade-in" id="btn_next" onClick="clicks=0; clickCount();">返回首页</button>'; // 返回按钮
+    document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长方向：</strong></li>" + 
+      description.suggDet.replace(/$/,trainingInfo);
+    console.log(description.suggDet);
   };
   var hrefname = location.pathname.toLowerCase().match(/^.+[\/\\](.*)(?=.html)/)[1].replace("-", "");
   window.onload = function() {

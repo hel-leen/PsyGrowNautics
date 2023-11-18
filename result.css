@@ -292,6 +292,11 @@
     color: rebeccapurple;
     font-weight: 800;
   }
+  hr {
+    border-top: dotted 1px; 
+    border-top-color: rgba(66, 66, 66, 0.1)
+    
+  }
 
   .title {
     background: #7bb7e6;
@@ -521,6 +526,11 @@
     margin: 2% 0;
     align-self: self-start;
     text-align: justify;
+  }
+
+  .contents> abbr {
+    display: flex;
+    justify-content: center;
   }
 
   .wordcloud>p {
