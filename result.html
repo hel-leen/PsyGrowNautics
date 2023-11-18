@@ -39,7 +39,6 @@
     MSscore = Math.round(scores.shift()), // 思维方式分
     mainType = MSscore < 66 ? "A" : "B", //主类型
     subType = scores.indexOf(Math.min(...scores)) + 1; // 亚型
-  console.log(scores);
   let 
     descriptions = // parse descriptions
     str.map((item) => {
@@ -202,7 +201,6 @@
     document.querySelectorAll("#btn_next")[0].outerHTML = '<button class="detail btn fade-in" id="btn_next" onClick="clicks=0; clickCount();">返回首页</button>'; // 返回按钮
     document.querySelectorAll(".contents")[0].innerHTML = "<li><strong>我的成长方向：</strong></li>" + 
       description.suggDet.replace(/$/,trainingInfo);
-    console.log(description.suggDet);
   };
   var hrefname = location.pathname.toLowerCase().match(/^.+[\/\\](.*)(?=.html)/)[1].replace("-", "");
   window.onload = function() {
