@@ -112,13 +112,14 @@
     .sort((a,b) => (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0));
   // 词云图的绘制
   var plot_wordcloud = ((container, data, colorful = true) => {
+    data = data.map((item) => {delete item.category; return item}); 
     var chart = anychart.tagCloud(data);
     chart.angles([0]);
     if(colorful == true) {
       var palette = "";
     } else {
       var palette = anychart.palettes.distinctColors();
-      palette.items(['#22092C', '#222341', '#ae3144', '#b05941']);
+      palette.items(['#120010', '#52092C', '#222341', '#ae3144', '#b05941']);
     }
     chart.palette(palette);
     chart.margin(-5, 0, -20, 0);
