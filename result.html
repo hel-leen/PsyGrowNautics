@@ -91,14 +91,14 @@
   // 增补成长、固定优劣势
   var add_adv = 
     mainType == "B"? 
-    [{category: "成长", x: "潜能", value: 275}, 
+    [{category: "成长", x: "潜能发展", value: 275}, 
     {category: "成长", x: "不断学习", value: 214}]:
     [{category: "固定", x: "接纳", value: 178}]; 
   var add_disadv = 
     mainType == "B"? 
     [{category: "成长", x: "成长思维", value: 0}] :
     [{category: "固定", x: "自我限定", value: 258},
-    {category: "固定", x: "不接受批评", value: 216}]; 
+    {category: "固定", x: "故步自封", value: 258}]; 
   // 优势特质赋值
   var data_adv = expand_char(char_adv);
   data_adv.push(add_adv);
