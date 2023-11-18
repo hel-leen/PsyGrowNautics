@@ -73,11 +73,15 @@
             return items = {
               category: obj.type,
               "x": item,
-              value: index == subType + 4 ? Math.floor(obj.score * 2.8 + Math.random() * 5) // 最低分的反项多加权
+              value: index == subType + 4 ? Math.floor(obj.score * 2.5 + Math.random() * 4) // 最低分的反项多加权
                 // : index == scores.indexOf(Math.max(...scores)) ? Math.floor(obj.score * 3 + Math.random() * 5) // 最高分加权
-                : obj.score > 90 ? Math.floor(obj.score * 3.3 + Math.random() * 2) // 高分加权
-                : obj.score > 80 ? Math.floor(obj.score * 2.2 + Math.random() * 2) : obj.score > 70 ? Math.floor(obj.score * 1.5 + Math.random() * 2) : obj.score < 10 ? Math.floor(obj.score * 0) // 低分加权
-                : obj.score < 20 ? Math.floor(obj.score * .2 + Math.random() * 2) : obj.score < 40 ? Math.floor(obj.score * .8 + Math.random() * 2) : Math.floor(obj.score + (Math.random() - 0.5) * 2) // 随机加减零头
+                : obj.score > 90 ? Math.floor(obj.score * 3 + Math.random() * 3) // 高分加权
+                : obj.score > 80 ? Math.floor(obj.score * 2 + Math.random() * 2) 
+                : obj.score > 70 ? Math.floor(obj.score * 1.5 + Math.random() * 1) 
+                : obj.score < 20 ? Math.floor(obj.score * 0) // 低分加权
+                : obj.score < 30 ? Math.floor(obj.score * .2 + Math.random() * 2) 
+                : obj.score < 40 ? Math.floor(obj.score * .8 + Math.random() * 2) 
+                : Math.floor(obj.score + (Math.random() - 0.5) * 2) // 随机加减零头
             }
           });
         };
@@ -87,25 +91,25 @@
   // 增补成长、固定优劣势
   var add_adv = 
     mainType == "B"? 
-    [{category: "成长", x: "潜能", value: 375}, 
-    {category: "成长", x: "不断学习", value: 314}]:
-    [{category: "固定", x: "自我接纳", value: 328}]; 
+    [{category: "成长", x: "潜能", value: 275}, 
+    {category: "成长", x: "不断学习", value: 214}]:
+    [{category: "固定", x: "自我接纳", value: 178}]; 
   var add_disadv = 
     mainType == "B"? 
     [{category: "成长", x: "成长思维", value: 0}] :
-    [{category: "固定", x: "自我限定", value: 358},
-    {category: "固定", x: "不接受批评", value: 276}]; 
+    [{category: "固定", x: "自我限定", value: 258},
+    {category: "固定", x: "不接受批评", value: 216}]; 
   // 优势特质赋值
   var data_adv = expand_char(char_adv);
-  data_adv.push(add_adv)
+  data_adv.push(add_adv);
   data_adv = data_adv.flat()
-    .filter((item) => item.value > 25)
+    .filter((item) => item.value > 30)
     .sort((a,b) => (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0));
   // 劣势特质赋值
   var data_disadv = expand_char(char_disadv);
-  data_disadv.push(add_disadv)
+  data_disadv.push(add_disadv);
   data_disadv = data_disadv.flat()
-    .filter((item) => item.value > 25)
+    .filter((item) => item.value > 33)
     .sort((a,b) => (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0));
   // 词云图的绘制
   var plot_wordcloud = ((container, data, colorful = true) => {
@@ -127,7 +131,7 @@
     tooltip.format('强度: <i>{%Value}</i>');
     chart.container(container);
     var parentWidth = parseInt(window.getComputedStyle(document.querySelector("#" + container).parentNode, null).getPropertyValue("width"));
-    document.querySelector("#" + container).style = "width: " + parentWidth * .88 + "px; height:" + parentWidth * .66 + "px;";
+    document.querySelector("#" + container).style = "width: " + parentWidth * .7 + "px; height:" + parentWidth * .5 + "px;";
     document.querySelector("." + container + "> img").style = 'display: none;';
     chart.draw();
   });
