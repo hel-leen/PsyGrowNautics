@@ -15,10 +15,6 @@
   const scores = Array.from({ length: 6 }, () => Math.random() * 75 + 24);
   console.log(scores);
   var clicks = 0,
-    MSscore = Math.round(scores.shift()), // 思维方式分
-    mainType = MSscore < 66 ? "A" : "B", //主类型
-    subType = scores.indexOf(Math.min(...scores)) + 1; // 亚型
-  let 
     radar12 = {value: Math.round(scores[1] * .25  + scores[2] * .25 + scores[0] * .5 ), 
       y: "开放 + 尽责+ 成长", x: "上进心"},
     radar13 = {value: Math.round(scores[1] * .25  + scores[3] * .25 + scores[0] * .5 ), 
@@ -40,6 +36,11 @@
     radar45 = {value: Math.round(scores[4] * .25  + scores[5] * .25 + scores[0] * .5 ), 
       y: "宜人 + 积极+ 成长", x: "达观力"},
     radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
+    MSscore = Math.round(scores.shift()), // 思维方式分
+    mainType = MSscore < 66 ? "A" : "B", //主类型
+    subType = scores.indexOf(Math.min(...scores)) + 1; // 亚型
+  console.log(scores);
+  let 
     descriptions = // parse descriptions
     str.map((item) => {
       return result = {
