@@ -35,7 +35,7 @@
       y: "外倾 + 积极+ 成长", x: "朋友力"},
     radar45 = {value: Math.round(scores[4] * .25  + scores[5] * .25 + scores[0] * .5 ), 
       y: "宜人 + 积极+ 成长", x: "达观力"},
-    radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // 雷达图纬度选择
+    radars = [radar12, radar13, radar14, radar15, radar23, radar34, radar45], // radar map selector
     MSscore = Math.round(scores.shift()), // 思维方式分
     mainType = MSscore < 66 ? "A" : "B", //主类型
     subType = scores.indexOf(Math.min(...scores)) + 1; // 亚型
@@ -56,11 +56,11 @@
     }), 
     description = descriptions.filter(item => item.code === mainType.concat(subType))[0]; // 筛选类型的对应描述
   console.log(mainType + (subType));
-  // 根据分数计算高低分权重
+  // 根据分数计算特质权重
   var char_value = scores.concat(scores.map((item) => {
       return item = 99 - item
     })),
-    // 按分数给各优劣特质赋值的function
+    // 按分数给各优劣特质赋值
     expand_char = ((char) => {
       char_map = char.map((ele, index) => {
         ele.score = char_value[index];
